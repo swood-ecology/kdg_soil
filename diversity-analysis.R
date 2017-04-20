@@ -1,8 +1,10 @@
 # -------------------------------
 # OTU diversity metric analysis
+# Microbial biomass and enzymatic analysis
 # Stephen Wood
 # -------------------------------
 
+library(vegan)    # For PCA and bi-plot, for enzyme data
 
 setwd("/Volumes/My Passport for Mac/Data/MiSeq/Senegal_16S/Data_and_analysis/joined/joined_demultiplexed/alpha_collated")
 
@@ -39,3 +41,19 @@ pd.plot <- boxplot(PD~LandUse,data=pd.format,main = "Phylogenetic Diversity")
 h.plot <- boxplot(Shannon~LandUse,data=shannon.format,main="Shannon")
 
 
+# Analyze for microbial biomass and enzymatic potential
+setwd("/Volumes/My Passport for Mac/Data/")
+sn_borlaug_soil_data <- read.csv("sn_borlaug_soil_data.csv",header=T)
+
+# Microbial biomass
+boxplot(Microbial_biomass ~ land_use,data=sn_borlaug_soil_data,main="Microbial biomass")
+summary(aov(Microbial_biomass ~ land_use,data=sn_borlaug_soil_data))
+TukeyHSD(aov(Microbial_biomass ~ land_use,data=sn_borlaug_soil_data))
+
+# Enzymatic potential
+enzyme <- sn_borlaug_soil_data[,25:29]
+rda.enzyme <- rda(enzyme ~ land_use,data=sn_borlaug_soil_data,scale=T)
+ordiplot(rda.enzyme,main="Enzymatic potential")
+points(rda.enzyme,"sites",pch=20,cex=0.5)
+text(rda.enzyme,"bp",cex=.8)
+text(rda.enzyme,"species",cex=.8,col="red")
