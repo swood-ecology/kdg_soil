@@ -11,7 +11,7 @@ sn_borlaug_soil_data <- read.csv("/Volumes/My Passport for Mac/Data/sn_borlaug_s
 ## Plots of relevant variables
 # Make function for ANOVA, Tukey test, and boxplot
 land_use_analysis <- function(variable,label,data=sn_borlaug_soil_data){
-  boxplot(variable ~ land_use,data=data,ylab=label)
+  boxplot(variable ~ land_use,data=data,ylab=label,main=label)
   summary(aov(variable ~ land_use,data=data))
   TukeyHSD(aov(variable ~ land_use,data=data))
 }
